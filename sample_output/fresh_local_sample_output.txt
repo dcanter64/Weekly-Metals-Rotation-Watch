@@ -1,0 +1,121 @@
+Date: 2026-10-08
+Run Time: 10:56 AM ET
+
+# Weekly Metals Rotation Watch
+
+## Decision Layer
+- Model decision: Trim / Reduce
+- Target bias: Underweight
+- Positioning action: Reduce to Underweight if currently Neutral/Overweight; otherwise maintain Underweight.
+- Tactical view: Underweight over 1-4 weeks.
+- Structural view: Constructive; a majority of metals proxies remain positive over 3m.
+- Regime: Gold-led defensive tape
+- Primary reason: Gold is the relative defensive leader within a broadly weak metals complex; silver, copper, and materials breadth lag SPY.
+- Core bullish rules: 0 of 4 passed
+- Nearest upgrade gate: COPX/SPY or CPER/SPY, 3.27 percentage points from confirmation.
+- Escalation trigger: Escalate to De-risk if 1w relative momentum weakens while silver and both copper proxies remain below SPY.
+- Invalidation: The full bullish confirmation rule passes for two consecutive weekly observations.
+- Decision conviction: high
+- Data quality: high
+- Review frequency: Weekly
+
+## Executive Read
+- Risk-off metals read: gold is still winning inside metals while silver and copper miners lag SPY.
+- Short-term tape is broadly unchanged from the 1m signal.
+- Key tells: SLV/SPY -11.37%, COPX/SPY -13.26%, GLD/SLV +5.39%, DBC/SPY +0.99%.
+
+## Key Data
+- Returns (1w/1m): GLD -1.26%/-5.45% | SLV -3.20%/-10.29% | COPX -0.65%/-12.21% | CPER +0.53%/-2.10% | DBC +1.13%/+2.22%
+- RS vs SPY (1m): GLD -6.59% | SLV -11.37% | COPX -13.26% | CPER -3.27% | DBC +0.99%
+- Gold vs Silver (1m): GLD/SLV +5.39%
+- Benchmarks (1w/1m): SPY +1.48%/+1.22% | QQQ +1.72%/+5.07%
+
+## Change Since Previous Report
+- Comparison basis: previous report from 2026-10-08 at 10:47 AM ET; the normal review cadence is weekly.
+
+| Metric | Previous | Current | Change |
+|---|---:|---:|---:|
+| SLV/SPY | -11.40% | -11.37% | +0.03% |
+| COPX/SPY | -13.20% | -13.26% | -0.06% |
+| GLD/SLV | +5.29% | +5.39% | +0.10% |
+| Model decision | Trim / Reduce | Trim / Reduce | unchanged |
+
+## Signal Type
+- Gold-led defensive tape
+
+## Interpretation
+- This is relative, not absolute, gold leadership: GLD is less weak than SLV and COPX but may still lag SPY.
+- Anchor on copper/silver leadership vs gold dominance as the primary rotation lens.
+
+## Cyclical Metals / AI Bottleneck Proxy Confirmation
+- Answer: Not confirmed
+- SLV/SPY and COPX/SPY have not confirmed; gold remains ahead of silver.
+
+## Ticker Detail
+| Ticker | Last price | 1w return | 1m return | 3m return | vs SPY 1m | vs QQQ 1m | Status |
+|---|---:|---:|---:|---:|---:|---:|---|
+| GLD | $377.92 | -1.26% | -5.45% | +0.24% | -6.59% | -10.02% | MIXED |
+| SLV | $53.26 | -3.20% | -10.29% | -1.28% | -11.37% | -14.62% | VERY WEAK |
+| COPX | $82.86 | -0.65% | -12.21% | +8.26% | -13.26% | -16.44% | VERY WEAK |
+| CPER | $39.72 | +0.53% | -2.10% | +4.55% | -3.27% | -6.82% | MIXED |
+| DBC | $33.12 | +1.13% | +2.22% | +20.35% | +0.99% | -2.71% | STRONG |
+| XME | $104.85 | +0.54% | -12.59% | +1.12% | -13.64% | -16.81% | VERY WEAK |
+| SETM | $28.43 | -1.13% | -17.58% | -6.49% | -18.57% | -21.56% | VERY WEAK |
+
+## Metals Leadership Hierarchy
+1. CPER - copper proxy (-2.10% 1m, -3.27% vs SPY)
+2. GLD - defensive relative leader (-5.45% 1m, -6.59% vs SPY)
+3. SLV - high-beta metal (-10.29% 1m, -11.37% vs SPY)
+4. COPX - cyclical copper miners (-12.21% 1m, -13.26% vs SPY)
+5. XME - very weak (-12.59% 1m, -13.64% vs SPY)
+6. SETM - very weak (-17.58% 1m, -18.57% vs SPY)
+
+## Commodity Context
+- DBC is a broad-commodity context indicator, not a metals-hierarchy constituent: +2.22% 1m and +0.99% versus SPY.
+- Gold-led means GLD leads silver and copper miners defensively; it does not imply that GLD is rising or beating SPY.
+
+## Decision Trigger Matrix
+| Condition | Current | Threshold | Gap | Status | Rule role |
+|---|---:|---:|---:|---|---|
+| SLV/SPY | -11.37% | > 0.00% | 11.37 pp needed | Fail | Required |
+| COPX/SPY | -13.26% | > 0.00% | 13.26 pp needed | Fail | Either copper proxy |
+| CPER/SPY | -3.27% | > 0.00% | 3.27 pp needed | Fail | Either copper proxy |
+| GLD/SLV | +5.39% | < 0.00% | 5.39 pp needed | Fail | Required |
+| Materials breadth | XME -13.64%; SETM -18.57% | Either > 0.00% | 13.64 pp needed | Fail | Required when available |
+| 1w relative momentum | unchanged | Not weakening | n/a | Pass | Weakening blocks Add / Increase |
+
+## Upgrade Conditions
+- Exact rule: SLV/SPY > 0 AND (COPX/SPY > 0 OR CPER/SPY > 0) AND GLD/SLV < 0 AND (XME/SPY > 0 OR SETM/SPY > 0, when available), with 1w momentum not weakening.
+- SLV/SPY moves above 0.00%.
+- COPX/SPY or CPER/SPY moves above 0.00%.
+- GLD/SLV moves below 0.00% to confirm silver leadership.
+- XME/SPY or SETM/SPY moves above 0.00%.
+- 1w relative momentum improves.
+
+## Current Bearish Conditions
+- SLV/SPY is at or below 0.00%.
+- Both COPX/SPY and CPER/SPY are at or below 0.00%.
+- GLD/SLV is at or above 0.00%; gold leads silver.
+- No available materials breadth proxy is above 0.00% versus SPY.
+
+## Escalation And Invalidation Rules
+### Escalation
+- Escalate to De-risk if 1w relative momentum weakens while silver and both copper proxies remain below SPY.
+- Escalate if the signal becomes Broad metals weakness or Weak / risk-off.
+### Invalidation
+- The full bullish confirmation rule passes for two consecutive weekly observations.
+
+## Risks / Contradictions
+- ETF proxies can diverge from spot; treat this as a directional signal, not precise pricing.
+- DBC is strong (+2.22% 1m, +0.99% vs SPY), but that is broad commodities strength rather than clean industrial metals leadership.
+
+## Rotation Summary
+Current stance: risk-off
+Change from last week: unchanged
+Evidence:
+1. COPX/SPY (1m) -13.26%
+2. GLD/SLV (1m) +5.39%
+3. SLV/SPY (1m) -11.37%
+Action implication: Reduce to Underweight if currently Neutral/Overweight; otherwise maintain Underweight.
+Decision conviction: high
+Data quality: high
