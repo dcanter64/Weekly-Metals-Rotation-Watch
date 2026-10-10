@@ -316,14 +316,26 @@ def _decision_output(
             "Escalate if the signal becomes Broad metals weakness or Weak / risk-off.",
         ]
     else:
-        downgrade_triggers = [
-            "SLV/SPY falls to 0.00% or below.",
-            "Both COPX/SPY and CPER/SPY fall to 0.00% or below.",
-            "GLD/SLV rises to 0.00% or above.",
-            "1w relative momentum weakens.",
-        ]
-        if rules["materials_breadth_above_zero"] is not None:
-            downgrade_triggers.insert(3, "No available materials breadth proxy remains above 0.00%.")
+        # Escalation names future deterioration only: each trigger is listed
+        # while its condition has not already tripped, so the list never
+        # contradicts the upgrade triggers or the current bearish conditions.
+        downgrade_triggers = []
+        if rules["slv_spy_above_zero"] is not False:
+            downgrade_triggers.append("SLV/SPY falls to 0.00% or below.")
+        if rules["copper_confirmation"] is not False:
+            downgrade_triggers.append("Both COPX/SPY and CPER/SPY fall to 0.00% or below.")
+        if rules["gld_slv_below_zero"] is not False:
+            downgrade_triggers.append("GLD/SLV rises to 0.00% or above.")
+        if rules["materials_breadth_above_zero"] is True:
+            downgrade_triggers.append("No available materials breadth proxy remains above 0.00%.")
+        if rules["relative_momentum"] != "weakening":
+            downgrade_triggers.append("1w relative momentum weakens.")
+    if not downgrade_triggers:
+        # The Decision Layer header prints the first trigger, so the list is
+        # never empty; this mirrors the upgrade-trigger fallback above.
+        downgrade_triggers.append(
+            "No escalation triggers currently active; all watched conditions have already tripped."
+        )
 
     if model_decision in ("Add / Increase", "Hold / Maintain"):
         invalidation_conditions = [
