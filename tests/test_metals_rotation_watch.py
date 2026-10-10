@@ -126,6 +126,92 @@ class ReportLogicTests(unittest.TestCase):
             decision["downgrade_triggers"],
         )
 
+    def test_downgrade_triggers_hide_already_tripped_conditions(self) -> None:
+        # Hold with every rule failing: only genuinely future deterioration
+        # may appear as an escalation trigger.
+        decision = self._structured_decision(
+            signal_type="Mixed / no clear signal",
+            ai_confirmation="Improving but not confirmed",
+            slv_spy=-0.5,
+            copx_spy=-0.2,
+            cper_spy=None,
+            gld_slv=0.5,
+            xme_spy=-1.0,
+            setm_spy=None,
+            relative_momentum="improving",
+        )
+        self.assertEqual(decision["model_decision"], "Hold / Maintain")
+        self.assertEqual(
+            decision["downgrade_triggers"], ["1w relative momentum weakens."]
+        )
+        self.assertEqual(
+            decision["upgrade_triggers"],
+            [
+                "SLV/SPY moves above 0.00%.",
+                "COPX/SPY or CPER/SPY moves above 0.00%.",
+                "GLD/SLV moves below 0.00% to confirm silver leadership.",
+                "XME/SPY or SETM/SPY moves above 0.00%.",
+            ],
+        )
+
+    def test_downgrade_triggers_fallback_when_everything_tripped(self) -> None:
+        # Hold with every rule failing and momentum already weakening: the
+        # list must not be empty (the report header prints the first trigger).
+        decision = self._structured_decision(
+            signal_type="Mixed / no clear signal",
+            ai_confirmation="Improving but not confirmed",
+            slv_spy=-0.5,
+            copx_spy=-0.2,
+            cper_spy=None,
+            gld_slv=0.5,
+            xme_spy=-1.0,
+            setm_spy=None,
+            relative_momentum="weakening",
+        )
+        self.assertEqual(decision["model_decision"], "Hold / Maintain")
+        self.assertEqual(
+            decision["downgrade_triggers"],
+            [
+                "No escalation triggers currently active; "
+                "all watched conditions have already tripped."
+            ],
+        )
+
+    def test_downgrade_triggers_show_all_when_rules_pass(self) -> None:
+        # Add / Increase: every rule passes, so every escalation trigger is a
+        # genuine future risk and the list is unchanged from before.
+        decision = self._structured_decision()
+        self.assertEqual(decision["model_decision"], "Add / Increase")
+        self.assertEqual(
+            decision["downgrade_triggers"],
+            [
+                "SLV/SPY falls to 0.00% or below.",
+                "Both COPX/SPY and CPER/SPY fall to 0.00% or below.",
+                "GLD/SLV rises to 0.00% or above.",
+                "No available materials breadth proxy remains above 0.00%.",
+                "1w relative momentum weakens.",
+            ],
+        )
+
+    def test_missing_data_keeps_both_trigger_lists(self) -> None:
+        # Missing data is not "already tripped": both directions stay listed.
+        decision = self._structured_decision(
+            signal_type="Mixed / no clear signal",
+            ai_confirmation="Improving but not confirmed",
+            slv_spy=None,
+            copx_spy=-0.2,
+            cper_spy=None,
+            gld_slv=0.5,
+            xme_spy=-1.0,
+            setm_spy=None,
+            relative_momentum="improving",
+        )
+        self.assertIsNone(decision["rule_inputs"]["slv_spy_above_zero"])
+        self.assertIn("SLV/SPY moves above 0.00%.", decision["upgrade_triggers"])
+        self.assertIn(
+            "SLV/SPY falls to 0.00% or below.", decision["downgrade_triggers"]
+        )
+
     def test_structured_decision_defensive_gold_led_tape(self) -> None:
         decision = self._structured_decision(
             signal_type="Gold-led defensive tape",
