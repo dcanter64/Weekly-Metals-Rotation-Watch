@@ -1,6 +1,6 @@
 # Roadmap
 
-Last reviewed: 2026-10-08
+Last reviewed: 2026-10-10
 
 ## Current State
 
@@ -11,7 +11,7 @@ The project is a local Windows workflow for generating a Weekly Metals Rotation 
 3. `automation/metals_rotation_watch.py` fetches market data through `automation/yfinance_metrics.py`
 4. The report prints to the terminal and writes a timestamped file under `output/`
 
-Decision Layer conversion Phases 1-3 are complete: the taxonomy, structured rules engine, and decision-first report surface are implemented and covered by unit tests. Phase 4 historical tracking and the remaining Phase 5 validation and acceptance work are still pending.
+Decision Layer conversion Phases 1-5 are complete: the taxonomy, structured rules engine, decision-first report surface, historical decision tracking, and validation and acceptance work are implemented and covered by unit tests.
 
 `README.md` describes the local workflow, Decision Layer versus supporting evidence, entry points, dependencies, validation commands, scheduling guidance, and output behavior.
 
@@ -184,3 +184,7 @@ This project can be considered complete when:
 ## Status Note
 
 As of 2026-10-08, Decision Layer Phases 1-5 and every Decision Layer definition-of-done item are complete. The refined report separates target exposure, positioning action, current evidence, future escalation, tactical and structural views, decision conviction, and data quality. Documentation and the tracked sample are current, per-report sidecars provide structured history, all 31 tests pass, the latest report validates, and previous-report comparison runs successfully.
+
+## Status Note 2026-10-10
+
+Re-verified after the escalation-trigger reporting fix (PR #1, branch `muse/fix-breadth-downgrade-trigger`): 37/37 unit tests pass, a fresh live report run validates end-to-end, the tracked sample validates, and previous-report comparison runs successfully. Escalation triggers now list future deterioration only, per the section's documented intent; no thresholds, decisions, or scoring logic changed. All Definition of Done items above remain satisfied.
