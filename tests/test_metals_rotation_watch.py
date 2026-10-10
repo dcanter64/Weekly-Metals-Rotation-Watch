@@ -87,6 +87,45 @@ class ReportLogicTests(unittest.TestCase):
         self.assertEqual(decision["exposure_bias"], "Watch")
         self.assertIn("SLV/SPY moves above 0.00%.", decision["upgrade_triggers"])
 
+    def test_breadth_triggers_are_complementary_when_breadth_fails(self) -> None:
+        # Breadth currently failing: the upgrade list names the breadth fix,
+        # so the escalation list must not also name breadth as a future
+        # trigger -- it describes the current state, not a deterioration.
+        decision = self._structured_decision(
+            signal_type="Mixed / no clear signal",
+            ai_confirmation="Improving but not confirmed",
+            slv_spy=-0.5,
+            copx_spy=-0.2,
+            cper_spy=None,
+            gld_slv=0.5,
+            xme_spy=-1.0,
+            setm_spy=None,
+            relative_momentum="improving",
+        )
+        self.assertEqual(decision["model_decision"], "Hold / Maintain")
+        self.assertFalse(decision["rule_inputs"]["materials_breadth_above_zero"])
+        self.assertIn(
+            "XME/SPY or SETM/SPY moves above 0.00%.",
+            decision["upgrade_triggers"],
+        )
+        self.assertFalse(
+            any(
+                "materials breadth proxy remains above" in item
+                for item in decision["downgrade_triggers"]
+            ),
+            "breadth escalation trigger must not appear while breadth is failing",
+        )
+
+    def test_breadth_downgrade_trigger_listed_when_breadth_passes(self) -> None:
+        # Breadth currently passing: the escalation list watches for its loss.
+        decision = self._structured_decision()
+        self.assertEqual(decision["model_decision"], "Add / Increase")
+        self.assertTrue(decision["rule_inputs"]["materials_breadth_above_zero"])
+        self.assertIn(
+            "No available materials breadth proxy remains above 0.00%.",
+            decision["downgrade_triggers"],
+        )
+
     def test_structured_decision_defensive_gold_led_tape(self) -> None:
         decision = self._structured_decision(
             signal_type="Gold-led defensive tape",

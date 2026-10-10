@@ -322,7 +322,7 @@ def _decision_output(
             "GLD/SLV rises to 0.00% or above.",
             "1w relative momentum weakens.",
         ]
-        if rules["materials_breadth_above_zero"] is not None:
+        if rules["materials_breadth_above_zero"] is True:
             downgrade_triggers.insert(3, "No available materials breadth proxy remains above 0.00%.")
 
     if model_decision in ("Add / Increase", "Hold / Maintain"):
