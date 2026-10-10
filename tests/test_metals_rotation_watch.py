@@ -103,7 +103,7 @@ class ReportLogicTests(unittest.TestCase):
             relative_momentum="improving",
         )
         self.assertEqual(decision["model_decision"], "Hold / Maintain")
-        self.assertFalse(decision["rule_inputs"]["materials_breadth_above_zero"])
+        self.assertIs(decision["rule_inputs"]["materials_breadth_above_zero"], False)
         self.assertIn(
             "XME/SPY or SETM/SPY moves above 0.00%.",
             decision["upgrade_triggers"],
