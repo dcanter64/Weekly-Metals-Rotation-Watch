@@ -1,0 +1,14 @@
+.venv/
+venv/
+.cache/
+__pycache__/
+*.py[cod]
+
+# Generated local reports
+output/
+
+# Editor and OS files
+.vscode/
+.idea/
+Thumbs.db
+Desktop.ini
