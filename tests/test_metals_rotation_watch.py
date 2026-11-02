@@ -1,5 +1,6 @@
 import csv
 import json
+import os
 from pathlib import Path
 import tempfile
 import unittest
@@ -74,6 +75,45 @@ class ReportLogicTests(unittest.TestCase):
         self.assertEqual(first_observation["exposure_bias"], "Neutral")
         self.assertIn("second consecutive weekly observation", first_observation["primary_reason"])
         self.assertEqual(second_observation["model_decision"], "Add / Increase")
+
+    def test_add_decision_reachable_after_saving_and_reloading_reports(self) -> None:
+        payload = {
+            "tickers": {
+                "GLD": {"ok": True, "last": 100.0, "w": 1.0, "m": 2.0, "q": 3.0},
+                "SLV": {"ok": True, "last": 20.0, "w": 2.0, "m": 3.0, "q": 4.0},
+                "COPX": {"ok": True, "last": 40.0, "w": 1.0, "m": 1.0, "q": 2.0},
+                "CPER": {"ok": True, "last": 30.0, "w": 1.0, "m": 2.0, "q": 3.0},
+                "DBC": {"ok": True, "last": 25.0, "w": 1.0, "m": 2.0, "q": 3.0},
+                "SPY": {"ok": True, "last": 500.0, "w": 0.5, "m": 1.0, "q": 2.0},
+                "QQQ": {"ok": True, "last": 450.0, "w": 0.4, "m": 1.2, "q": 2.2},
+            },
+            "ratios_1m": {
+                "GLD/SPY": 1.0,
+                "SLV/SPY": 2.0,
+                "COPX/SPY": 1.0,
+                "CPER/SPY": 1.0,
+                "DBC/SPY": 1.0,
+                "GLD/SLV": -1.0,
+                "COPX/CPER": 0.0,
+            },
+        }
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            output_dir = root / "output"
+            output_dir.mkdir()
+            decisions = []
+            for index, (date, run_time) in enumerate(
+                [("2026-10-01", "11:00 AM ET"), ("2026-10-08", "11:00 AM ET")]
+            ):
+                previous_state = watch._load_previous_decision_state(root)
+                text = watch.build_report_text(Metrics(payload), date, run_time, previous_state=previous_state)
+                path = output_dir / f"weekly_metals_rotation_watch_{date}_1100_AM_ET.txt"
+                path.write_text(text, encoding="utf-8")
+                watch._write_sidecars(path, text, date, run_time)
+                os.utime(path, (1_000 + index, 1_000 + index))
+                decisions.append(watch._extract_field(text, r"^- Model decision: (.+)$"))
+
+        self.assertEqual(decisions, ["Hold / Maintain", "Add / Increase"])
 
     def test_structured_decision_improving_but_not_confirmed(self) -> None:
         decision = self._structured_decision(

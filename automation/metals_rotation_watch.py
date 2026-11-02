@@ -400,13 +400,20 @@ def _apply_decision_persistence(
     decision_output: dict[str, Any],
     previous_state: dict[str, Any] | None,
 ) -> dict[str, Any]:
-    if decision_output["model_decision"] != "Add / Increase":
-        return decision_output
-    previous_decision = previous_state.get("model_decision") if previous_state else None
-    if previous_decision == "Add / Increase":
-        return decision_output
-
     resolved = dict(decision_output)
+    resolved["rule_signal"] = decision_output["model_decision"]
+    if decision_output["model_decision"] != "Add / Increase":
+        return resolved
+    # Compare against the prior rule signal, not the published decision, which
+    # is downgraded to Hold on the first observation and would never match.
+    previous_decision = None
+    if previous_state:
+        previous_decision = previous_state.get("rule_signal")
+        if previous_decision not in MODEL_DECISIONS:
+            previous_decision = previous_state.get("model_decision")
+    if previous_decision == "Add / Increase":
+        return resolved
+
     resolved["model_decision"] = "Hold / Maintain"
     resolved["exposure_bias"] = "Neutral"
     resolved["positioning_action"] = _positioning_action("Hold / Maintain", "Neutral")
@@ -735,6 +742,7 @@ def _load_previous_decision_state(root: Path) -> dict[str, Any] | None:
         "date": _extract_field(text, r"^Date: (.+)$"),
         "run_time": _extract_field(text, r"^Run Time: (.+)$"),
         "model_decision": _extract_field(text, r"^- Model decision: (.+)$"),
+        "rule_signal": _extract_field(text, r"^- Rule signal: (.+)$"),
         "rule_values": {},
     }
     sidecar_path = report_path.with_suffix(".json")
@@ -747,6 +755,7 @@ def _load_previous_decision_state(root: Path) -> dict[str, Any] | None:
             state["date"] = sidecar.get("date", state["date"])
             state["run_time"] = sidecar.get("run_time", state["run_time"])
             state["model_decision"] = sidecar.get("model_decision", state["model_decision"])
+            state["rule_signal"] = sidecar.get("rule_signal", state["rule_signal"])
             decision_rules = sidecar.get("decision_rules", [])
             if isinstance(decision_rules, list):
                 for rule in decision_rules:
@@ -850,6 +859,7 @@ def _report_summary(report_text: str, report_date: str, report_time: str) -> dic
         "date": report_date,
         "run_time": report_time,
         "model_decision": _extract_field(report_text, r"^- Model decision: (.+)$"),
+        "rule_signal": _extract_field(report_text, r"^- Rule signal: (.+)$"),
         "exposure_bias": _extract_field(report_text, r"^- Target bias: (.+)$"),
         "positioning_action": _extract_field(report_text, r"^- Positioning action: (.+)$"),
         "tactical_view": _extract_field(report_text, r"^- Tactical view: (.+)$"),
@@ -1092,6 +1102,7 @@ def build_report_text(
         print(f"- Positioning action: {decision_output['positioning_action']}")
         print(f"- Tactical view: {decision_output['tactical_view']}")
         print(f"- Structural view: {decision_output['structural_view']}")
+        print(f"- Rule signal: {decision_output['rule_signal']}")
         print(f"- Regime: {signal_type}")
         print(f"- Primary reason: {decision_output['primary_reason']}")
         print(
